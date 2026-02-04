@@ -54,6 +54,69 @@ Your browser does not support the video tag.
 <li>MicroSD card</li>
 <img src="mode2.png" alt="Project Diagram" width="560" height="315">
 <p><a href="data.csv">Datalog</a></p>
+<div class="section box">
+<h2>Battery Current Calculation</h2>
+<p>
+Given:<br>
+Battery voltage = 3.7 V<br>
+Efficiency = 0.85
+</p>
+
+<p>
+I_batt = P_usb / (3.7 × 0.85)
+</p>
+
+<p>
+Mode 1:<br>
+I_batt = 2.43 / 3.145 = 0.77 A
+</p>
+
+<p>
+Mode 2:<br>
+I_batt = 9.29 / 3.145 = 2.96 A
+</p>
+</div>
+
+<div class="section box">
+<h2>Battery Runtime</h2>
+<p>
+Battery capacity = 0.5 Ah
+</p>
+
+<p>
+Mode 1:<br>
+t = 0.5 / 0.77 = 0.65 hours ≈ 39 minutes
+</p>
+
+<p>
+Mode 2:<br>
+t = 0.5 / 2.96 = 0.17 hours ≈ 10 minutes
+</p>
+</div>
+
+<div class="section box">
+<h2>Logging Overhead</h2>
+<p>
+ΔI = I_mode2 − I_mode1<br>
+ΔI = 1.8 − 0.47 = 1.33 A
+</p>
+
+<p>
+ΔP = P_mode2 − P_mode1<br>
+ΔP = 9.29 − 2.43 = 6.86 W
+</p>
+</div>
+
+<div class="section box">
+<h2>Conclusion</h2>
+<p>
+Mode 2 consumes more power due to SD card write operations.
+</p>
+<p>
+Logging significantly reduces battery runtime.
+</p>
+</div>
+  
   <li>Creating Schematic</li>
 <img src="scl.png" alt="Project Diagram" width="560" height="315">
 
