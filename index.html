@@ -4,225 +4,825 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Project</title>
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #ffffff0f;
+    --accent: #7c6af7;
+    --accent2: #f7c16a;
+    --accent3: #6af7c1;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --glow: rgba(124, 106, 247, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -40%;
+    left: -20%;
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(ellipse, rgba(124,106,247,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(10%, 8%) scale(1.1); }
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 80px 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--glow);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 70%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-top: 16px;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    opacity: 0.3;
+  }
+
+  /* ── ENTRY CARD ── */
+  .entry {
+    position: relative;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .entry:hover {
+    border-color: rgba(124,106,247,0.3);
+    box-shadow: 0 0 40px rgba(124,106,247,0.07);
+  }
+
+  .entry-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .entry-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--glow);
+    border: 1px solid rgba(124,106,247,0.2);
+    border-radius: 8px;
+    padding: 4px 10px;
+    min-width: 42px;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  .entry-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .entry-chevron {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .entry.open .entry-chevron { transform: rotate(180deg); }
+
+  .entry-body {
+    display: none;
+    padding: 0 28px 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .entry.open .entry-body { display: block; }
+
+  /* ── MEDIA GRID ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .media-grid img {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    object-fit: cover;
+    aspect-ratio: 16/9;
+    transition: transform 0.3s, border-color 0.3s;
+    background: var(--surface2);
+  }
+
+  .media-grid img:hover {
+    transform: scale(1.02);
+    border-color: rgba(124,106,247,0.4);
+  }
+
+  /* Full-width image */
+  .img-full {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-top: 16px;
+    transition: transform 0.3s;
+    background: var(--surface2);
+  }
+  .img-full:hover { transform: scale(1.01); }
+
+  /* ── VIDEO ── */
+  .video-wrap {
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #000;
+  }
+
+  .video-wrap video {
+    width: 100%;
+    display: block;
+    max-height: 400px;
+  }
+
+  /* ── MATH BOX ── */
+  .math-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .math-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .math-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 14px;
+  }
+
+  .math-card p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .math-card p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .math-highlight {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent3);
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* ── DOWNLOAD LINKS ── */
+  .download-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+  }
+
+  .dl-btn:hover {
+    border-color: var(--accent);
+    background: var(--glow);
+    color: var(--accent);
+  }
+
+  .dl-btn .icon { font-size: 14px; }
+
+  /* ── PHASE TAG ── */
+  .phase-tag {
+    display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: rgba(247,193,106,0.1);
+    border: 1px solid rgba(247,193,106,0.3);
+    color: var(--accent2);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin: 16px 0 10px;
+  }
+
+  /* ── SUB SECTION ── */
+  .sub-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin: 22px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── MILESTONE CARDS ── */
+  .milestone-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 14px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .milestone-card span {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  /* ── CONCLUSION ── */
+  .conclusion-box {
+    background: linear-gradient(135deg, rgba(124,106,247,0.08), rgba(106,247,193,0.05));
+    border: 1px solid rgba(124,106,247,0.2);
+    border-radius: 12px;
+    padding: 22px;
+    margin-top: 16px;
+  }
+
+  .conclusion-box p {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .conclusion-box p + p { margin-top: 8px; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  /* ── SCROLL ANIMATION ── */
+  .entry { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .entry.visible { opacity: 1; transform: translateY(0); }
+
+</style>
 </head>
 <body>
-<h1>Welcome to My Project Website</h1>
-<p>This website documents my project progress.</p>
-<h2>Updates</h2>
-<ul id="updates">
 
-  
-<li>Video of implementation on the board</li>
-<video controls  width="560" height="315">
-<source src="blinkvid.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-<li>Built-in IMU and Microphone</li>
-<img src="tempgyro.png" alt="Project Diagram" width="560" height="315">
+<header>
+  <div class="badge">Embedded Systems · Project Log</div>
+  <h1>My Project Website</h1>
+  <p class="subtitle">Documenting hardware builds, lab experiments & system designs</p>
+</header>
 
-<img src="tempgyro2.png" alt="Project Diagram" width="560" height="315">
-<li>OLED Display</li>
-<img src="disp.png" alt="Project Diagram" width="560" height="315">
-<img src="dip.jpeg" alt="Project Diagram" width="560" height="315">
-<li>MicroSD card</li>
-<img src="sdcard.png" alt="Project Diagram" width="560" height="315">
-<p><a href="datalog.txt">Datalog</a></p>
-<li>Real time clock</li>
-<img src="realtimeclock.png" alt="Project Diagram" width="560" height="315">
+<div class="container">
+  <div class="section-label">Updates &amp; Progress</div>
 
-<img src="clock2.png" alt="Project Diagram" width="560" height="315">
-<li>Buzzer</li>
-<img src="buzzer.png" alt="Project Diagram" width="560" height="315">
-<video controls  width="560" height="315">
-<source src="music.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-  <li>Week 2: Week 2 LAB</li>
-<li>BLUETOOTH LED CONTROL</li>
-<img src="blelib.png" alt="Project Diagram" width="560" height="315">
-<img src="ledcode.png" alt="Project Diagram" width="560" height="315">
-<img src="nrf.jpeg" alt="Project Diagram" width="560" height="315">
-<img src="write.jpeg" alt="Project Diagram" width="560" height="315">
-  <img src="ootput.png" alt="Project Diagram" width="560" height="315">
-<li>OLED Display</li>
-<img src="mode1.png" alt="Project Diagram" width="560" height="315">
-<img src="mode1.jpeg" alt="Project Diagram" width="560" height="315">
-<li>MicroSD card</li>
-<img src="mode2.png" alt="Project Diagram" width="560" height="315">
-<p><a href="data.csv">Datalog</a></p>
-<div class="section box">
-  <li>Using Analyzer to calculate voltage and current</li>
-  <video controls  width="560" height="315">
-<source src="analyzer.mp4" type="video/mp4">
-<h2>Battery Current Calculation</h2>
-<p>
-Given:<br>
-Battery voltage = 3.7 V<br>
-Efficiency = 0.85
-</p>
+  <!-- 01 -->
+  <div class="entry open">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">01</span>
+      <span class="entry-title">Video of Implementation on the Board</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="video-wrap">
+        <video controls>
+          <source src="blinkvid.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
 
-<p>
-Ibatt = Pusb / (3.7 × 0.85)
-</p>
+  <!-- 02 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">02</span>
+      <span class="entry-title">Built-in IMU and Microphone</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="tempgyro.png" alt="IMU Gyro">
+        <img src="tempgyro2.png" alt="IMU Gyro 2">
+      </div>
+    </div>
+  </div>
 
-<p>
-Mode 1:<br>
-I_batt = 2.43 / 3.145 = 0.77 A
-</p>
+  <!-- 03 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">03</span>
+      <span class="entry-title">OLED Display</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="disp.png" alt="OLED Display">
+        <img src="dip.jpeg" alt="OLED Display 2">
+      </div>
+    </div>
+  </div>
 
-<p>
-Mode 2:<br>
-Ibatt = 9.29 / 3.145 = 2.96 A
-</p>
+  <!-- 04 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">04</span>
+      <span class="entry-title">MicroSD Card</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <img src="sdcard.png" alt="SD Card" class="img-full">
+      <div class="download-grid" style="margin-top:16px;">
+        <a href="datalog.txt" class="dl-btn"><span class="icon">📄</span> datalog.txt</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">05</span>
+      <span class="entry-title">Real Time Clock</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="realtimeclock.png" alt="Real Time Clock">
+        <img src="clock2.png" alt="Clock 2">
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">06</span>
+      <span class="entry-title">Buzzer</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <img src="buzzer.png" alt="Buzzer" class="img-full">
+      <div class="video-wrap">
+        <video controls>
+          <source src="music.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">07</span>
+      <span class="entry-title">Week 2 Lab — Bluetooth LED Control</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="blelib.png" alt="BLE Library">
+        <img src="ledcode.png" alt="LED Code">
+        <img src="nrf.jpeg" alt="NRF">
+        <img src="write.jpeg" alt="Write">
+        <img src="ootput.png" alt="Output">
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">08</span>
+      <span class="entry-title">OLED Display — Mode Testing</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="mode1.png" alt="Mode 1">
+        <img src="mode1.jpeg" alt="Mode 1 Photo">
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">09</span>
+      <span class="entry-title">MicroSD Card — Mode 2 Logging</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <img src="mode2.png" alt="Mode 2" class="img-full">
+      <div class="download-grid" style="margin-top:16px;">
+        <a href="data.csv" class="dl-btn"><span class="icon">📊</span> data.csv</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">10</span>
+      <span class="entry-title">Power Analysis — Voltage &amp; Current</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="video-wrap">
+        <video controls>
+          <source src="analyzer.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="math-grid">
+        <div class="math-card">
+          <h3>Battery Current</h3>
+          <p>Battery voltage = <strong>3.7 V</strong><br>Efficiency = <strong>0.85</strong></p>
+          <p>Ibatt = Pusb / (3.7 × 0.85)</p>
+          <p>Mode 1:<span class="math-highlight">0.77 A</span></p>
+          <p>Mode 2:<span class="math-highlight">2.96 A</span></p>
+        </div>
+        <div class="math-card">
+          <h3>Battery Runtime</h3>
+          <p>Capacity = <strong>0.5 Ah</strong></p>
+          <p>t = capacity / current</p>
+          <p>Mode 1:<span class="math-highlight">≈ 39 min</span></p>
+          <p>Mode 2:<span class="math-highlight">≈ 10 min</span></p>
+        </div>
+        <div class="math-card">
+          <h3>Logging Overhead</h3>
+          <p>ΔI = I₂ − I₁<span class="math-highlight">1.33 A</span></p>
+          <p>ΔP = P₂ − P₁<span class="math-highlight">6.86 W</span></p>
+        </div>
+      </div>
+
+      <div class="conclusion-box">
+        <p>Mode 2 consumes significantly more power due to SD card write operations.</p>
+        <p>Logging overhead reduces battery runtime from ~39 minutes down to ~10 minutes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">11</span>
+      <span class="entry-title">Creating Schematic</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <img src="scl.png" alt="Schematic" class="img-full">
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">12</span>
+      <span class="entry-title">Week 4 — Step Counter</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="stepcode.png" alt="Step Code">
+        <img src="stepop.png" alt="Step Output">
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">13</span>
+      <span class="entry-title">LAB — Activity Recognition</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+
+      <div class="phase-tag">Phase 1</div>
+      <div class="sub-title">Finding Board Address</div>
+      <div class="media-grid">
+        <img src="bleadress.png" alt="BLE Address">
+        <img src="lab42.png" alt="Lab 4-2">
+        <img src="lab43.png" alt="Lab 4-3">
+        <img src="lab44.png" alt="Lab 4-4">
+        <img src="lab45.png" alt="Lab 4-5">
+      </div>
+
+      <div class="sub-title" style="margin-top:24px;">Loss &amp; MAE Graphs</div>
+      <div class="media-grid">
+        <img src="lossgraph.png" alt="Loss Graph">
+        <img src="maegraph.png" alt="MAE Graph">
+      </div>
+
+      <div class="sub-title">Punch &amp; Curl Recognition</div>
+      <img src="recognition.png" alt="Recognition" class="img-full">
+
+      <div class="phase-tag" style="margin-top:28px;">Phase 2</div>
+      <div class="sub-title">Uploading All Activities CSV Data</div>
+      <img src="lab46.png" alt="Lab 4-6" class="img-full">
+
+      <div class="sub-title">Loss &amp; MAE Graphs</div>
+      <div class="media-grid">
+        <img src="loss2.png" alt="Loss 2">
+        <img src="mae2.png" alt="MAE 2">
+      </div>
+
+      <div class="sub-title">All Activity Recognition</div>
+      <img src="recognition2.png" alt="Recognition 2" class="img-full">
+
+      <div class="sub-title">Data Files</div>
+      <div class="download-grid">
+        <a href="punch.csv" download class="dl-btn"><span class="icon">⬇</span> punch.csv</a>
+        <a href="flex.csv" download class="dl-btn"><span class="icon">⬇</span> flex.csv</a>
+        <a href="sitting.csv" download class="dl-btn"><span class="icon">⬇</span> sittong.csv</a>
+        <a href="standing.csv" download class="dl-btn"><span class="icon">⬇</span> standing.csv</a>
+        <a href="walking.csv" download class="dl-btn"><span class="icon">⬇</span> walking.csv</a>
+        <a href="staits_up.csv" download class="dl-btn"><span class="icon">⬇</span> staits_up.csv</a>
+        <a href="stairs_down.csv" download class="dl-btn"><span class="icon">⬇</span> stairs_down.csv</a>
+      </div>
+
+      <div class="sub-title">Model &amp; Code Files</div>
+      <div class="download-grid">
+        <a href="model.h" download class="dl-btn"><span class="icon">⬇</span> model.h (Phase 1)</a>
+        <a href="phase2data.h" download class="dl-btn"><span class="icon">⬇</span> phase2data.h (Phase 2)</a>
+        <a href="phase2code.ino" download class="dl-btn"><span class="icon">⬇</span> phase2code.ino</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">14</span>
+      <span class="entry-title">In-Class Activity</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="video-wrap">
+        <video controls>
+          <source src="ledvid.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">15</span>
+      <span class="entry-title">Project Milestones</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="milestone-card">
+        <span>📄 Project Milestone 1</span>
+        <a href="milestone1.pdf" download class="dl-btn"><span class="icon">⬇</span> milestone1.pdf</a>
+      </div>
+      <div class="milestone-card">
+        <span>📊 Milestone 1 Presentation</span>
+        <a href="embeddedpres1.pptx" download class="dl-btn"><span class="icon">⬇</span> embeddedpres1.pptx</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 16 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">16</span>
+      <span class="entry-title">Robotic Car</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="video-wrap">
+        <video controls>
+          <source src="car.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- 17 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">17</span>
+      <span class="entry-title">LAB 6 — Car Build</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="media-grid">
+        <img src="cam.png" alt="Camera">
+        <img src="car2.png" alt="Car 2">
+        <img src="car3.png" alt="Car 3">
+        <img src="car4.png" alt="Car 4">
+        <img src="car5.png" alt="Car 5">
+        <img src="lastcar.jpeg" alt="Final Car">
+      </div>
+      <div class="video-wrap">
+        <video controls>
+          <source src="lights.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- 18 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">18</span>
+      <span class="entry-title">LAB 7 — Making Piano</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="sub-title">Oscilloscope at Lab</div>
+      <img src="pino.jpeg" alt="Piano Setup" class="img-full">
+      <div class="sub-title">Piano Using Switches</div>
+      <div class="video-wrap">
+        <video controls>
+          <source src="piano.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<div class="section box">
-<h2>Battery Runtime</h2>
-<p>
-Battery capacity = 0.5 Ah
-</p>
+<footer>
+  Built with care · Embedded Systems Project Log
+</footer>
 
-<p>
-Mode 1:<br>
-t = 0.5 / 0.77 = 0.65 hours ≈ 39 minutes
-</p>
+<script>
+  function toggle(header) {
+    const entry = header.parentElement;
+    entry.classList.toggle('open');
+  }
 
-<p>
-Mode 2:<br>
-t = 0.5 / 2.96 = 0.17 hours ≈ 10 minutes
-</p>
-</div>
+  // Scroll-triggered reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
 
-<div class="section box">
-<h2>Logging Overhead</h2>
-<p>
-ΔI = Imode2 − Imode1<br>
-ΔI = 1.8 − 0.47 = 1.33 A
-</p>
-
-<p>
-ΔP = Pmode2 − Pmode1<br>
-ΔP = 9.29 − 2.43 = 6.86 W
-</p>
-</div>
-
-<div class="section box">
-<h2>Conclusion</h2>
-<p>
-Mode 2 consumes more power due to SD card write operations.
-</p>
-<p>
-Logging significantly reduces battery runtime.
-</p>
-</div>
-  
-  <li>Creating Schematic</li>
-<img src="scl.png" alt="Project Diagram" width="560" height="315">
-
-  <li>Week 4: Step counter</li>
-  <img src="stepcode.png" alt="Project Diagram" width="560" height="315">
-<li>Counting steps after connecting to bluetooth</li>
-<img src="stepop.png" alt="Project Diagram" width="560" height="315">
-
-  <li>LAB-Activity Recognition</li>
-    <li>Phase1</li>
-    <li>Finding address of board</li>
-<img src="bleadress.png" alt="Project Diagram" width="560" height="315">
-<img src="lab42.png" alt="Project Diagram" width="560" height="315">
-  <img src="lab43.png" alt="Project Diagram" width="560" height="315">
-  <img src="lab44.png" alt="Project Diagram" width="560" height="315">
-  <img src="lab45.png" alt="Project Diagram" width="560" height="315">
-<li>Loss graph</li>
-<img src="lossgraph.png" alt="Project Diagram" width="560" height="315">
-<li>MAE Graph</li>
-<img src="maegraph.png" alt="Project Diagram" width="560" height="315">
-<li>Punch and Curl Recognition</li>
-<img src="recognition.png" alt="Project Diagram" width="560" height="315">
-
-    <li>Phase2</li>
-    <li>UPloading all activities cvs data</li>
-<img src="lab46.png" alt="Project Diagram" width="560" height="315">
-<li>Loss graph</li>
-<img src="loss2.png" alt="Project Diagram" width="560" height="315">
-<li>MAE Graph</li>
-<img src="mae2.png" alt="Project Diagram" width="560" height="315">
-<li>All activity recognition</li>
-<img src="recognition2.png" alt="Project Diagram" width="560" height="315">
-
-  <li><h3>Data</h3></li>
-
-<ul>
-    <li><a href="punch.csv" download>punch.csv</a></li>
-    <li><a href="flex.csv" download>flex.csv</a></li>
-    <li><a href="sitting.csv" download>sittong.csv</a></li>
-    <li><a href="standing.csv" download>standing.csv</a></li>
-    <li><a href="walking.csv" download>walking.csv</a></li>
-    <li><a href="staits_up.csv" download>staits_up.csv</a></li>
-    <li><a href="stairs_down.csv" download>stairs_down.csv</a></li>
-</ul>
-
-<li><h3>Model Data</h3></li>
-
-<ul>
-    <li><strong>Phase 1</strong><br>
-        <a href="model.h" download>model.h</a>
-    </li>
-    <br>
-    <li><strong>Phase 2</strong><br>
-        <a href="phase2data.h" download>phase2data.h</a>
-      <li><h3>Phase 2 Code File</h3></li>
-
-<ul>
-    <li>
-        <a href="phase2code.ino" download>phase2code.ino</a>
-    </li>
-</ul>
-
-    </li>
-</ul>
- <li>In class activity</li>
-<video controls width="560" height="315">
-  <source src="ledvid.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-<li><strong>Project Milestone 1</strong><br>
-  <a href="milestone1.pdf" download>milestone1.pdf</a>
-</li>
-
-<li><strong>Project Milestone 1 Presentation</strong><br>
-  <a href="embeddedpres1.pptx" download>embeddedpres1.pptx</a>
-</li>
-  
-<li><strong>ROBOTIC CAR</strong><br>
-<video controls  width="560" height="315">
-<source src="car.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-  <li>LAB6</li>
-<img src="cam.png" alt="Project Diagram" width="560" height="315">
-<img src="car2.png" alt="Project Diagram" width="560" height="315">
-<img src="car3.png" alt="Project Diagram" width="560" height="315">
-<img src="car4.png" alt="Project Diagram" width="560" height="315">
-<img src="car5.png" alt="Project Diagram" width="560" height="315">
-<img src="lastcar.jpeg" alt="Project Diagram" width="560" height="315">
-
-<video controls width="560" height="315">
-  <source src="lights.mp4" type="video/mp4">
-</video>
-
-<ul>
-  <li>LAB7 - Making piano</li>
-  <li>Oscilloscope at lab</li>
-  <img src="pino.jpeg" alt="Project Diagram" width="560" height="315">
-  <li>Piano using switches</li>
-  <video controls width="560" height="315">
-    <source src="piano.mp4" type="video/mp4">
-  </video>
-</ul>
-
-</ul>
-  
+  document.querySelectorAll('.entry').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
