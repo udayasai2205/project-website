@@ -843,6 +843,22 @@
   }, { threshold: 0.05 });
 
   document.querySelectorAll('.entry').forEach(el => observer.observe(el));
+  <!-- 20 -->
+<div class="entry">
+  <div class="entry-header" onclick="toggle(this)">
+    <span class="entry-num">20</span>
+    <span class="entry-title">LAB 10</span>
+    <span class="entry-chevron">▾</span>
+</div>
+  <div class="entry-body">
+    <div class="video-wrap">
+      <video controls>
+        <source src="lab10.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
 </script>
 </body>
 </html>
