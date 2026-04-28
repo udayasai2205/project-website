@@ -31,7 +31,6 @@
     overflow-x: hidden;
   }
 
-  /* Animated background grid */
   body::before {
     content: '';
     position: fixed;
@@ -62,7 +61,6 @@
     to { transform: translate(10%, 8%) scale(1.1); }
   }
 
-  /* ── HEADER ── */
   header {
     position: relative;
     z-index: 10;
@@ -113,7 +111,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── LAYOUT ── */
   .container {
     position: relative;
     z-index: 10;
@@ -122,7 +119,6 @@
     padding: 60px 24px 100px;
   }
 
-  /* ── SECTION LABEL ── */
   .section-label {
     font-family: 'Syne', sans-serif;
     font-size: 11px;
@@ -143,7 +139,6 @@
     opacity: 0.3;
   }
 
-  /* ── ENTRY CARD ── */
   .entry {
     position: relative;
     margin-bottom: 12px;
@@ -152,12 +147,21 @@
     background: var(--surface);
     overflow: hidden;
     transition: border-color 0.3s, box-shadow 0.3s;
-    animation: fadeUp 0.5s ease both;
   }
 
   .entry:hover {
     border-color: rgba(124,106,247,0.3);
     box-shadow: 0 0 40px rgba(124,106,247,0.07);
+  }
+
+  /* Special styling for the final Project section */
+  .entry.project-entry {
+    border-color: rgba(124,106,247,0.25);
+    background: linear-gradient(135deg, #111118, #13111f);
+  }
+  .entry.project-entry:hover {
+    border-color: rgba(124,106,247,0.5);
+    box-shadow: 0 0 60px rgba(124,106,247,0.12);
   }
 
   .entry-header {
@@ -183,12 +187,26 @@
     letter-spacing: 0.05em;
   }
 
+  .entry-num.project-num {
+    background: rgba(124,106,247,0.2);
+    border-color: rgba(124,106,247,0.5);
+    font-size: 12px;
+  }
+
   .entry-title {
     font-family: 'Syne', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--text);
     flex: 1;
+  }
+
+  .entry-title.project-title {
+    font-size: 1.15rem;
+    background: linear-gradient(90deg, #fff 40%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .entry-chevron {
@@ -208,7 +226,6 @@
 
   .entry.open .entry-body { display: block; }
 
-  /* ── MEDIA GRID ── */
   .media-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -231,7 +248,6 @@
     border-color: rgba(124,106,247,0.4);
   }
 
-  /* Full-width image */
   .img-full {
     width: 100%;
     border-radius: 10px;
@@ -242,7 +258,6 @@
   }
   .img-full:hover { transform: scale(1.01); }
 
-  /* ── VIDEO ── */
   .video-wrap {
     margin-top: 20px;
     border-radius: 12px;
@@ -257,7 +272,6 @@
     max-height: 400px;
   }
 
-  /* ── MATH BOX ── */
   .math-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -302,7 +316,6 @@
     margin-top: 8px;
   }
 
-  /* ── DOWNLOAD LINKS ── */
   .download-grid {
     display: flex;
     flex-wrap: wrap;
@@ -333,7 +346,21 @@
 
   .dl-btn .icon { font-size: 14px; }
 
-  /* ── PHASE TAG ── */
+  /* Project download button — more prominent */
+  .dl-btn.dl-featured {
+    background: rgba(124,106,247,0.1);
+    border-color: rgba(124,106,247,0.35);
+    color: #c5beff;
+    padding: 12px 22px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .dl-btn.dl-featured:hover {
+    background: rgba(124,106,247,0.2);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
   .phase-tag {
     display: inline-block;
     font-family: 'Syne', sans-serif;
@@ -349,7 +376,6 @@
     margin: 16px 0 10px;
   }
 
-  /* ── SUB SECTION ── */
   .sub-title {
     font-family: 'Syne', sans-serif;
     font-size: 0.78rem;
@@ -362,7 +388,6 @@
     border-bottom: 1px solid var(--border);
   }
 
-  /* ── MILESTONE CARDS ── */
   .milestone-card {
     display: flex;
     align-items: center;
@@ -382,7 +407,39 @@
     font-size: 0.95rem;
   }
 
-  /* ── CONCLUSION ── */
+  /* Project deliverable card — styled variant of milestone-card */
+  .project-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(124,106,247,0.05);
+    border: 1px solid rgba(124,106,247,0.18);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 14px;
+    gap: 16px;
+    flex-wrap: wrap;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .project-card:hover {
+    background: rgba(124,106,247,0.09);
+    border-color: rgba(124,106,247,0.35);
+  }
+  .project-card span {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: var(--text);
+  }
+  .project-card .card-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 3px;
+  }
+  .project-card-left { display: flex; flex-direction: column; }
+
   .conclusion-box {
     background: linear-gradient(135deg, rgba(124,106,247,0.08), rgba(106,247,193,0.05));
     border: 1px solid rgba(124,106,247,0.2);
@@ -399,7 +456,16 @@
 
   .conclusion-box p + p { margin-top: 8px; }
 
-  /* ── FOOTER ── */
+  /* Divider before final project section */
+  .section-divider {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    margin: 48px auto 32px;
+    padding: 0 24px;
+  }
+  .section-divider .section-label { margin-bottom: 0; }
+
   footer {
     position: relative;
     z-index: 10;
@@ -410,10 +476,8 @@
     font-size: 0.82rem;
   }
 
-  /* ── SCROLL ANIMATION ── */
   .entry { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
   .entry.visible { opacity: 1; transform: translateY(0); }
-
 </style>
 </head>
 <body>
@@ -820,6 +884,81 @@
     </div>
   </div>
 
+  <!-- 20 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">20</span>
+      <span class="entry-title">LAB 9</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+    </div>
+  </div>
+
+  <!-- 21 -->
+  <div class="entry">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num">21</span>
+      <span class="entry-title">LAB 10</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+      <div class="video-wrap">
+        <video controls>
+          <source src="lab10.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Final Project Section — visually separated -->
+<div class="section-divider">
+  <div class="section-label">Final Project</div>
+</div>
+
+<div class="container" style="padding-top: 0;">
+
+  <!-- 22 — Final Project -->
+  <div class="entry project-entry open">
+    <div class="entry-header" onclick="toggle(this)">
+      <span class="entry-num project-num">22</span>
+      <span class="entry-title project-title">Laser Security System — Final Project</span>
+      <span class="entry-chevron">▾</span>
+    </div>
+    <div class="entry-body">
+
+      <div class="sub-title">Project Demo</div>
+      <div class="video-wrap">
+        <video controls>
+          <source src="projectdemo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="sub-title" style="margin-top: 28px;">Project Deliverables</div>
+
+      <div class="project-card">
+        <div class="project-card-left">
+          <span>📊 Milestone 3 Presentation</span>
+          <span class="card-desc">Final slide deck — System design, firmware, ML pipeline &amp; results</span>
+        </div>
+        <a href="milestone3.pptx" download class="dl-btn dl-featured"><span class="icon">⬇</span> milestone3.pptx</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-card-left">
+          <span>📄 Hardware Documentation</span>
+          <span class="card-desc">PCB specs, GPIO pinout, circuit design &amp; component reference</span>
+        </div>
+        <a href="hardwaredoc.pdf" download class="dl-btn dl-featured"><span class="icon">⬇</span> hardwaredoc.pdf</a>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -832,7 +971,6 @@
     entry.classList.toggle('open');
   }
 
-  // Scroll-triggered reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) {
@@ -843,22 +981,6 @@
   }, { threshold: 0.05 });
 
   document.querySelectorAll('.entry').forEach(el => observer.observe(el));
-  <!-- 20 -->
-<div class="entry">
-  <div class="entry-header" onclick="toggle(this)">
-    <span class="entry-num">20</span>
-    <span class="entry-title">LAB 10</span>
-    <span class="entry-chevron">▾</span>
-</div>
-  <div class="entry-body">
-    <div class="video-wrap">
-      <video controls>
-        <source src="lab10.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
-  </div>
-</div>
 </script>
 </body>
 </html>
